@@ -15,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import business_logic.ExchangeCalculator;
+import business_logic.BarcenaysCalculator;
 
 
 public class CalculatorController {
@@ -31,13 +33,17 @@ public class CalculatorController {
         @FXML
         private ComboBox<String> toComboBox;
 
+        public ExchangeCalculator bizLogic;
         @FXML
         void initialize() {
+            //Initialize the business logic interface
+            this.bizLogic = new BarcenaysCalculator();
+
             // initialize toComboBox
-            fromComboBox.setItems(FXCollections.observableArrayList(Currency.longNames()));
+            fromComboBox.setItems(FXCollections.observableArrayList(bizLogic.getCurrencyLongNames()));
 
             // initialize fromComboBox
-            toComboBox.setItems(FXCollections.observableArrayList(Currency.longNames()));
+            toComboBox.setItems(FXCollections.observableArrayList(bizLogic.getCurrencyLongNames()));
 
             result.setBackground(new Background(
                     new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -61,13 +67,11 @@ public class CalculatorController {
                 if (origCurrency.equals(endCurrency)) {
                     result.setText("Please select different currencies");
                 } else {
-                    ForexOperator operator = new ForexOperator(origCurrency,
-                            origAmount, endCurrency);
+
                     try {
-                        double destAmount = operator.getChangeValue();
-                        CommissionCalculator calculator = new CommissionCalculator(destAmount,
-                                endCurrency);
-                        destAmount -= calculator.calculateCommission();
+                        double destAmount = bizLogic.getChangeValue(origCurrency, origAmount, endCurrency);
+
+                        destAmount -= bizLogic.calculateCommission(origAmount, origCurrency);
                         NumberFormat twoDecimal = NumberFormat.getNumberInstance(Locale.US);
                         twoDecimal.setMaximumFractionDigits(2);
                         twoDecimal.setRoundingMode(RoundingMode.FLOOR);

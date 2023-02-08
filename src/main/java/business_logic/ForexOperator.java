@@ -1,4 +1,4 @@
-package eus.ehu.bum1_fx;
+package business_logic;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,7 +10,7 @@ import java.net.URL;
  * the exchange value of a certain amount of the first one in terms of the other one
  *
  */
-public class ForexOperator {
+public class ForexOperator{
 
 	private String sourceCurrency;
 	private double amount;

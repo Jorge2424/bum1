@@ -1,4 +1,6 @@
-package eus.ehu.bum1_fx;
+package business_logic;
+
+import business_logic.ForexOperator;
 
 /**
  * This class knows the result of a forex exchange operation in terms of the SHORT NAME
@@ -6,7 +8,7 @@ package eus.ehu.bum1_fx;
  * to this operation. Two important constants are owned by this class.
  *
  */
-public class CommissionCalculator {
+public class CommissionCalculator{
 
 	private final static double MIN_COMMISION_IN_EUROS = 3.0;
 	private final static double COMMISION_RATE = 0.0285;
@@ -35,6 +37,10 @@ public class CommissionCalculator {
 			minCommission = fexop.getChangeValue();
 		}
 		double normalCommission = this.amount * COMMISION_RATE;
+
+		if(minCommission < 0| normalCommission < 0)
+			throw new Exception();
+
 		return Math.max(minCommission, normalCommission);
 	}
 }

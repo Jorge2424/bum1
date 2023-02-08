@@ -7,4 +7,6 @@ module eus.ehu.bum1_fx {
 
     opens eus.ehu.bum1_fx to javafx.fxml;
     exports eus.ehu.bum1_fx;
+    exports business_logic;
+    opens business_logic to javafx.fxml;
 }
